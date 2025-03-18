@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shopping_app/common/styles/spacing_styles.dart';
 import 'package:shopping_app/utils/constants/colors.dart';
 import 'package:shopping_app/utils/constants/image_strings.dart';
@@ -32,7 +33,7 @@ class LoginScreen extends StatelessWidget {
               const TLoginForm(), // Form
 
               /// Divider
-              TFormDivider(dark: dark), // Row
+              TFormDivider(dividerText: TTexts.orSignInWith.capitalize!), // Row
               const SizedBox(height: TSizes.spaceBtwSections),
 
               /// Footer

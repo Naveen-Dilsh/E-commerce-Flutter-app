@@ -13,7 +13,9 @@ class TTexts {
 
 // Authentication Form Text
   static const String email = "Email";
-  static const String username = "Last Name";
+  static const String firstName = "First Name";
+  static const String lastName = "Last Name";
+  static const String username = "Username";
   static const String name = "A Name";
   static const String password = "Password";
   static const String createAccount = "Create Account";
@@ -37,11 +39,15 @@ class TTexts {
   static const String camera = "Camera";
   static const String removePhoto = "Remove Photo";
   static const String removeSmall = "Remove Small Pic";
+  static const String iAgreeTo = "I Agree to";
+  static const String privacyPolicy = "Privacy Policy";
+  static const String termsOfUse = "Term of Use";
+  static const String and = "and";
 
 // Authentication Messages Text
   static const String loginTitle = "Welcome Back";
   static const String loginSubTitle = "Sign in using correct and verified credentials";
-  static const String signupTitle = "Registration (Step success) - (Step Required)";
+  static const String signupTitle = "Let's create your account";
   static const String forgetPasswordTitle = "Forget Password";
   static const String forgetPasswordSubtitle =
       "Don't worry please don't forget use. enter your Email and we will send you a password reset link.";
