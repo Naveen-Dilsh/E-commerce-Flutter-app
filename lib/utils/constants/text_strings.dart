@@ -58,4 +58,8 @@ class TTexts {
   // -- Home
   static const String homeAppBarTitle = "Good day for shopping!";
   static const String homeAppBarSubTitle = "Taimoor Sikander";
+
+  static const String yourAccountCreatedTitle = "Your account successfully created!";
+  static const String yourAccountCreatedSubTitle =
+      "Welcome to Coding With T! Discover unique items and experience world of shopping online.";
 }
