@@ -20,4 +20,7 @@ class TImages {
   static const String deliveredInPlaneIllustration = "assets/animations/boy.gif";
   static const String deliveredEmailIllustration = "assets/animations/boy.gif";
   static const String verifyIllustration = "assets/animations/boy.gif";
+
+  // --
+  static const String docerAnimation = "assets/animations/boy.gif";
 }
