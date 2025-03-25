@@ -22,5 +22,5 @@ class TImages {
   static const String verifyIllustration = "assets/animations/boy.gif";
 
   // --
-  static const String docerAnimation = "assets/animations/boy.gif";
+  static const String docerAnimation = "assets/logos/Facebook.png";
 }
