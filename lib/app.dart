@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/bindings/general.bindings.dart';
 import 'package:shopping_app/features/authentication/screens/onboarding/onboarding.dart';
 import 'package:shopping_app/utils/theme/theme.dart';
 
@@ -14,6 +15,7 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
+      initialBinding: GeneralBindings(),
       // home: const OnboardingScreen(),
       home: const Scaffold(
           backgroundColor: TColors.primary, body: Center(child: CircularProgressIndicator(color: Colors.white))),
