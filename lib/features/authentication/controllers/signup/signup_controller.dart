@@ -1,9 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/data/repositories/authentication/authentication_repository.dart';
+import 'package:shopping_app/data/repositories/user/user_repository.dart';
+import 'package:shopping_app/features/authentication/screens/signup/verify_email.dart';
 import 'package:shopping_app/utils/constants/image_strings.dart';
 import 'package:shopping_app/utils/helpers/network_manager.dart';
 import '../../../../utils/popups/full_screen_loader.dart';
 import '../../../../utils/popups/loaders.dart';
+import '../../models/user_model.dart';
 
 class SignupController extends GetxController {
   static SignupController get instance => Get.find();
@@ -20,17 +25,23 @@ class SignupController extends GetxController {
   GlobalKey<FormState> signupFormKey = GlobalKey<FormState>(); //form key for form validation
 
   ///-- SIGNUP FORM CONTROLLER --///
-  Future<void> signup() async {
+  void signup() async {
     try {
       // start Loading
-      TFullScreenLoader.openLoadingDialog('We are processing Your information...', TImages.docerAnimation);
+      // TFullScreenLoader.openLoadingDialog('We are processing Your information...', TImages.docerAnimation);
 
       // check Internet Connection
       final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected) return;
+      if (!isConnected) {
+        //Remove Loader
+        TFullScreenLoader.stopLoading();
+        return;
+      }
 
       // Form Validation
       if (!signupFormKey.currentState!.validate()) {
+        //Remove Loader
+        TFullScreenLoader.stopLoading();
         return;
       }
 
@@ -44,18 +55,36 @@ class SignupController extends GetxController {
       }
 
       // Register user in the firebase Authentication & Save user data in Firebase
+      final UserCredential =
+          await AuthenticationRepository.instance.registerWithEmailAndPassword(email.text.trim(), password.text.trim());
 
       // Save Authenticated user data in the Firebase Firestore
+      final newUser = UserModel(
+        id: UserCredential.user!.uid,
+        email: email.text.trim(),
+        firstName: firstName.text.trim(),
+        lastName: lastName.text.trim(),
+        username: username.text.trim(),
+        phoneNumber: phoneNumber.text.trim(),
+        profilePicture: '',
+      );
+
+      final userRepository = Get.put(UserRepository());
+      await userRepository.saveUserRecord(newUser);
+
+      //Remove Loader
+      TFullScreenLoader.stopLoading();
 
       // Show success message
+      TLoaders.successSnackBar(title: 'Congratulations', message: 'Account created successfully');
 
       // Move to verify Email screen
+      Get.to(() => const VerifyEmailScreen());
     } catch (e) {
+      //Remove Loader
+      TFullScreenLoader.stopLoading();
       // Show some Generic Error to the user
       TLoaders.errorSnackBar(title: 'oh Snap!', message: e.toString());
-    } finally {
-      // Remove Loader
-      TFullScreenLoader.stopLoading();
     }
   }
 }
