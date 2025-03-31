@@ -79,7 +79,7 @@ class SignupController extends GetxController {
       TLoaders.successSnackBar(title: 'Congratulations', message: 'Account created successfully');
 
       // Move to verify Email screen
-      Get.to(() => const VerifyEmailScreen());
+      Get.to(() => VerifyEmailScreen(email: email.text.trim()));
     } catch (e) {
       //Remove Loader
       TFullScreenLoader.stopLoading();
