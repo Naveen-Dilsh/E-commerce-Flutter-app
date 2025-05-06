@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shopping_app/features/authentication/screens/login/login.dart';
 import 'package:shopping_app/features/authentication/screens/onboarding/onboarding.dart';
 import 'package:shopping_app/features/authentication/screens/signup/verify_email.dart';
@@ -29,7 +30,7 @@ class AuthenticationRepository extends GetxController {
     final user = _auth.currentUser;
     if (user != null) {
       if (user.emailVerified) {
-        Get.offAll(() => const Home());
+        Get.offAll(() => const HomeScreen());
       } else {
         Get.offAll(() => VerifyEmailScreen(
               email: _auth.currentUser?.email,
@@ -48,6 +49,21 @@ class AuthenticationRepository extends GetxController {
   /*--------------------------------Email & Password sign in--------------------------------*/
 
   /// [EmailAuthentication] - SignIn
+  Future<UserCredential> loginWithEmailAndPassword(String email, String password) async {
+    try {
+      return await _auth.signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw "something went wrong. Please try again later";
+    }
+  }
 
   /// [EmailAuthentication] - Register
 
