@@ -106,6 +106,50 @@ class AuthenticationRepository extends GetxController {
   /*--------------------------------Federated identity & social sign-in--------------------------------*/
 
   /// [GoogleAuthentication] - Google
+  Future<UserCredential> signInWithGoogle() async {
+    try {
+      print('Starting Google Sign-In process');
+      // Trigger the authentication flow
+      final GoogleSignInAccount? userAccount = await GoogleSignIn().signIn();
+
+      if (userAccount == null) {
+        print('User cancelled the sign-in process');
+        throw 'Google Sign-In was cancelled by the user';
+      }
+
+      print('Google Sign-In account obtained: ${userAccount.email}');
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth = await userAccount?.authentication;
+      print('Google authentication obtained');
+
+      // Create a new credential
+      final credentials = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      print('Google credentials created');
+
+      final userCredential = await _auth.signInWithCredential(credentials);
+      print('Firebase authentication successful');
+
+      return userCredential;
+
+      //once signed in, return the UserCredential
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw "something went wrong. Please try again later";
+    }
+  }
+
   /// [FacebookAuthentication] - Facebook
 
   /*--------------------------------./end Federated identity & social sign-in--------------------------------*/
@@ -113,7 +157,9 @@ class AuthenticationRepository extends GetxController {
   /// [LogoutUser] - Valid for any authentication
   Future<void> logout() async {
     try {
+      await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
+      Get.offAll(() => const LoginScreen());
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
